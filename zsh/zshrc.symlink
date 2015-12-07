@@ -1,0 +1,21 @@
+#!/usr/bin/env zsh
+#set -eu
+
+export ZSH="$HOME/.dotfiles"
+
+
+if [[ -e "~/.localrc" ]]; then
+	source "~/.localrc"
+fi
+
+
+find ~/.dotfiles/zsh -name '*.zsh' |\
+  while read file ; do
+    source "$file"
+done
+
+
+export PATH="$PATH:$HOME/bin"  # won't crash if not exists
+export PATH="$PATH:$HOME/.dotfiles/bin"
+export PATH="$PATH:."
+

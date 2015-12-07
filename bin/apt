@@ -1,0 +1,75 @@
+#!/usr/bin/env bash
+set -eux
+
+# arguments :
+# - add [names]: install
+# - rm [names]: remove
+# - ls [patterns]: list
+# - up : update and upgrade
+
+
+main_param="$1"
+shift
+
+
+################
+# Pact
+################
+
+pact.exists(){ set -eu
+  which pact >/dev/null 2>&1
+}
+
+pact.add(){ set -eu
+  pact.exists || return
+  pact install "$@"
+}
+
+pact.up(){ set -eu
+  pact.exists || return
+  if [[ $# -ne 0 ]] ;then
+    pact update "$@" || true
+  else
+    pact show | xargs -I % pact update %
+  fi
+}
+
+pact.rm(){ set -eu
+  pact.exists || return
+  pact remove "$@" || true
+}
+
+pact.ls(){ set -eu
+  pact.exists || return
+  if [[ $# -ne 0 ]] ;then
+    pact find "$@" || true
+  else
+    pact show "$@"
+  fi
+}
+
+
+
+# First with cyg-get
+
+cmds="pact"
+
+
+
+case "$main_param" in
+  --help)
+    echo "add rm ls up"
+    exit 0
+  ;;
+  #*)
+  #  echo "cmd not found"
+  #  exit 1
+  #;;
+esac
+
+cmd_name="$main_param"
+
+for cmd in $cmds ; do
+  ${cmd}.${cmd_name} "$@"
+done
+

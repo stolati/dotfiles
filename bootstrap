@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+set -eux
+
+DOTFILES_ROOT="$(cd "$(dirname "$0")"; pwd -P)"
+
+
+link_file(){ #<file_from> <file_to>
+	typeset file_from="$1" file_to="$2"
+	echo "link $file_from => $file_to"
+  # TODO add more test to not erase existing files
+  ln -f -s "$file_from" "$file_to"
+}
+
+
+install_dotfiles(){
+
+  find -H "$DOTFILES_ROOT" -maxdepth 2 -name '*.symlink' -not -path '*.git*' |\
+  while read src; do
+    dst="$HOME/.$(basename "$src" .symlink)"
+    link_file "$src" "$dst"
+  done
+}
+
+
+install_dotfiles
+
+ln -f -s "$DOTFILES_ROOT" "$HOME/.dotfiles"
+
+
