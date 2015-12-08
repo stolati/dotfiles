@@ -4,8 +4,8 @@
 export ZSH="$HOME/.dotfiles"
 
 
-if [[ -e "~/.localrc" ]]; then
-	source "~/.localrc"
+if [[ -f "$HOME/.localrc" ]]; then
+	source "$HOME/.localrc"
 fi
 
 
