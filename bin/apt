@@ -1,75 +1,60 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 set -eux
 
-# arguments :
-# - add [names]: install
-# - rm [names]: remove
-# - ls [patterns]: list
-# - up : update and upgrade
+echo "asking for ${2:-}"
 
 
-main_param="$1"
+command="$1"
 shift
 
 
-################
-# Pact
-################
-
-pact.exists(){ set -eu
-  which pact >/dev/null 2>&1
-}
-
-pact.add(){ set -eu
-  pact.exists || return
-  pact install "$@"
-}
-
-pact.up(){ set -eu
-  pact.exists || return
-  if [[ $# -ne 0 ]] ;then
-    pact update "$@" || true
-  else
-    pact show | xargs -I % pact update %
-  fi
-}
-
-pact.rm(){ set -eu
-  pact.exists || return
-  pact remove "$@" || true
-}
-
-pact.ls(){ set -eu
-  pact.exists || return
-  if [[ $# -ne 0 ]] ;then
-    pact find "$@" || true
-  else
-    pact show "$@"
-  fi
+install(){ #<cmd>
+	typeset cmd="$1"
+	# special case, we search if we have an installation before
+	find "$HOME/.dotfiles/" -name "${cmd}.install" | while read l; do
+		"$l"
+		return
+	done
+	pact install "$@"
 }
 
 
 
-# First with cyg-get
-
-cmds="pact"
 
 
 
-case "$main_param" in
-  --help)
-    echo "add rm ls up"
-    exit 0
-  ;;
-  #*)
-  #  echo "cmd not found"
-  #  exit 1
-  #;;
+case "$command" in
+	i)
+		install "$@"
+	;;
 esac
+		
 
-cmd_name="$main_param"
 
-for cmd in $cmds ; do
-  ${cmd}.${cmd_name} "$@"
-done
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

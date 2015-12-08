@@ -11,3 +11,4 @@ alias d_update!='( cd ~/.dotfiles ; git pull )'
 
 
 
+

@@ -1,16 +1,13 @@
 #!/usr/bin/env zsh
 #set -eu
 
-export ZSH="$HOME/.dotfiles"
-
-
 if [[ -f "$HOME/.localrc" ]]; then
 	source "$HOME/.localrc"
 fi
 
 
-find ~/.dotfiles/zsh -name '*.zsh' |\
-  while read file ; do
+find "$HOME/.dotfiles/" -name '*.zsh' |\
+while read file ; do
     source "$file"
 done
 

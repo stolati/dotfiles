@@ -1,0 +1,40 @@
+#!/usr/bin/env zsh
+set -eux
+
+if which lpass >/dev/null 2>&1 ; then
+	exit 0
+fi
+
+
+case "$ENV_OS" in
+CYGWIN)
+	apt i apt-cyg
+	pact install wget make gcc-core openssl-devel libcurl-devel libxml2-devel cygutils-extra
+
+
+	git_url="https://github.com/lastpass/lastpass-cli.git"
+	tmp_dir="$(mktemp -u)"
+
+	git clone "$git_url" "$tmp_dir"
+
+	pushd "$tmp_dir"
+	make
+	make install
+	popd
+
+	rm -rf "$tmp_dir"
+	;;
+*)
+	echo "Env not found" >&2
+	exit 1
+	;;
+esac
+
+
+
+
+
+
+
+
+

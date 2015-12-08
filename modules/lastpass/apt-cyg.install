@@ -1,0 +1,41 @@
+#!/usr/bin/env zsh
+set -eux
+
+
+if which apt-cyg >/dev/null 2>&1 ; then
+	exit 0
+fi
+
+
+if [[ "$ENV_OS" == "CYGWIN" ]]; then
+	tmp_file="$(mktemp -d)"
+	pushd "$tmp_file"
+	lynx -source rawgit.com/transcode-open/apt-cyg/master/apt-cyg > apt-cyg
+	install apt-cyg /bin
+	rm apt-cyg
+	popd
+	rmdir "$tmp_file"
+
+	# set the cache elsewhere because apt-cyg is not good for having spaces
+	# https://github.com/transcode-open/apt-cyg/issues/50
+	
+	apt-cyg cache "$(mktemp -d)"
+	exit 0
+fi
+
+exit 1 # only in cygwin
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
