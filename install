@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+set -eux
+
+DOTFILES_ROOT="$(cd "$(dirname "$0")"; pwd -P)"
+
+
+# TODO put it in install
+## link symlink files
+#find -H "$DOTFILES_ROOT" -name '*.symlink' -not -path '*.git*' # |\
+#while read src; do
+#	dst="$HOME/.$(basename "$src" .symlink)"
+#	echo "linking $src => $dst"
+#	#link_file "$src" "$dst"
+#done
+
+# Add our bootstrap to .zshrc
+dest="$HOME/.zshrc"
+line="source '$DOTFILES_ROOT/bootstrap'"
+if ! grep --quiet "$line" "$dest";  then
+	echo "line not present, adding it"
+	echo "$line" >> "$dest"
+else
+	echo "line present, doing nothing"
+fi
+
+
+# Special case of zshrc
+#install_dotfiles
+
+#ln -f -s "$DOTFILES_ROOT" "$HOME/.dotfiles"
+
+
