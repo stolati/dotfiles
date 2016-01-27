@@ -1,0 +1,12 @@
+#!/usr/bin/env zsh
+set -eu
+
+
+#http://stackoverflow.com/questions/9901210/bash-source0-equivalent-in-zsh
+DOTFILES_ROOT="$(cd "$(dirname "${(%):-%N}")" ; pwd -P)"
+
+echo "Testing bootstrap start"
+. "$DOTFILES_ROOT"/bootstrap
+echo "Testing bootstrap end"
+
+

@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 
 echo "Hello $USERNAME !"
 
@@ -9,23 +9,15 @@ echo Loading dotfiles from "$DOTFILES_ROOT"
 
 
 # Load zsh files
-find -H "$DOTFILES_ROOT" -maxdepth 2 -name '*.zsh' -not -path '*.git' |\
+find -H "$DOTFILES_ROOT" -name '*.zsh' -not -path '*.git' |\
 while read file; do
-	# protect ourselves against not working files
-	if zsh -eu "$file" ; then
-		source $file
-	else
-		echo "source [$file] didn't worked"
-	fi
+	source $file
 done
 
 
-# Should link the symlink files, maybe only once per day ?
-
-
-
-
-
-
-
+# symlink files
+find -H "$DOTFILES_ROOT" -name '*.symlink' -not -path '*.git' |\
+while read file; do
+	ln -sf "$file" "$HOME/.$(basename "$file" .symlink)"
+done
 

@@ -16,3 +16,17 @@
 #export PATH="$PATH:$HOME/.dotfiles/bin"
 #export PATH="$PATH:."
 #
+
+
+############
+# Vim mode
+############
+
+bindkey -v  # vim mode
+export KEYTIMEOUT=1  # timeout between the <ESC> in tenth of seconds
+
+
+
+
+
+
