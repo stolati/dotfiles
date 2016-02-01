@@ -1,12 +1,20 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env dash
+# dash is the simpliest sh we can find
 set -eu
 
-
-#http://stackoverflow.com/questions/9901210/bash-source0-equivalent-in-zsh
-DOTFILES_ROOT="$(cd "$(dirname "${(%):-%N}")" ; pwd -P)"
-
-echo "Testing bootstrap start"
-. "$DOTFILES_ROOT"/bootstrap
-echo "Testing bootstrap end"
+cd "`dirname "$0"`"
 
 
+# exec with zsh as file and source
+echo "ZSH - file"
+zsh -eu bootstrap > /dev/null
+echo "ZSH - source"
+zsh -eu -c 'source bootstrap' >/dev/null
+
+echo "BASH - file"
+bash -eu bootstrap >/dev/null
+echo "BASH - source"
+bash -eu -c 'source bootstrap' >/dev/null
+
+
+echo "All test passed well"

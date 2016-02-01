@@ -1,9 +1,27 @@
 #!/usr/bin/env zsh
-
 echo "Hello $USERNAME !"
 
+# get the shell
+is_zsh=false
+is_bash=false
+
+if [ -n "${ZSH_VERSION:-}" ]; then
+   is_zsh=true
+elif [ -n "${BASH_VERSION:-}" ]; then
+   is_bash=true
+else
+   echo "SHell type not found, quitting"
+   return 1
+fi
+
+
 #http://stackoverflow.com/questions/9901210/bash-source0-equivalent-in-zsh
-DOTFILES_ROOT="$(cd "$(dirname "${(%):-%N}")" ; pwd -P)"
+if $is_zsh ; then
+  DOTFILES_ROOT="$(cd "$(dirname "${(%):-%N}")" ; pwd -P)"
+elif $is_bash ; then
+  DOTFILES_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P)"
+fi
+
 
 echo Loading dotfiles from "$DOTFILES_ROOT"
 
@@ -11,7 +29,7 @@ echo Loading dotfiles from "$DOTFILES_ROOT"
 # Load zsh files
 find -H "$DOTFILES_ROOT" -name '*.zsh' -not -path '*.git' |\
 while read file; do
-	source $file
+	. $file
 done
 
 
@@ -20,4 +38,8 @@ find -H "$DOTFILES_ROOT" -name '*.symlink' -not -path '*.git' |\
 while read file; do
 	ln -sf "$file" "$HOME/.$(basename "$file" .symlink)"
 done
+
+
+# Cleaning
+unset is_zsh is_bash
 
