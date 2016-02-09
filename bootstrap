@@ -25,21 +25,36 @@ fi
 
 echo Loading dotfiles from "$DOTFILES_ROOT"
 
+search_dotfiles(){
+  find -H "$DOTFILES_ROOT" -name "*.$1" -not -path '*.git'
+}
+
 
 # Load zsh files
-find -H "$DOTFILES_ROOT" -name '*.zsh' -not -path '*.git' |\
-while read file; do
-	. $file
-done
+search_dotfiles sh | while read f ; do . $f ; done
+
+if $is_zsh ; then
+  search_dotfiles zsh | while read f; do . $f ; done
+elif $is_bash ; then
+  search_dotfiles bash | while read f; do . $f ; done
+fi
 
 
 # symlink files
-find -H "$DOTFILES_ROOT" -name '*.symlink' -not -path '*.git' |\
-while read file; do
+search_dotfiles symlink | while read file; do
 	ln -sf "$file" "$HOME/.$(basename "$file" .symlink)"
 done
 
 
 # Cleaning
 unset is_zsh is_bash
+unset -f search_dotfiles
+
+
+if [ -f "$HOME/profile" -a -z "${NOT_LOAD_PROFILE:-}" ] ;then
+  source "$HOME/profile"
+fi
+
+
+
 

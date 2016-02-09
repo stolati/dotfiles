@@ -18,24 +18,11 @@ if [[ "$ENV_OS" == "CYGWIN" ]]; then
 
 	# set the cache elsewhere because apt-cyg is not good for having spaces
 	# https://github.com/transcode-open/apt-cyg/issues/50
-	
+
 	apt-cyg cache "$(mktemp -d)"
 	exit 0
 fi
 
 exit 1 # only in cygwin
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 

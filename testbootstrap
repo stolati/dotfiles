@@ -2,6 +2,9 @@
 # dash is the simpliest sh we can find
 set -eu
 
+export NOT_LOAD_PROFILE=true
+
+
 cd "`dirname "$0"`"
 
 
@@ -15,6 +18,8 @@ echo "BASH - file"
 bash -eu bootstrap >/dev/null
 echo "BASH - source"
 bash -eu -c 'source bootstrap' >/dev/null
+
+unset NOT_LOAD_PROFILE
 
 
 echo "All test passed well"
